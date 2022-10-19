@@ -2,7 +2,7 @@ CREATE TABLE "users" (
 	"id" serial NOT NULL,
 	"name" varchar(50) NOT NULL UNIQUE,
 	"email" varchar(100) NOT NULL UNIQUE,
-	"password" varchar(50) NOT NULL,
+	"password" varchar(250) NOT NULL,
 	"picture" TEXT NOT NULL,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
 	"deletedAt" TIMESTAMP DEFAULT NULL,
