@@ -13,5 +13,9 @@ const schemaSignUp = joi.object({
       "string.pattern.base": "image format is invalid",
     }),
 });
+const schemaSignIn = joi.object({
+  email: joi.string().email().required().max(100).trim(),
+  password: joi.string().required().max(50).min(4).trim(),
+});
 
-export default schemaSignUp;
+export { schemaSignUp, schemaSignIn };
