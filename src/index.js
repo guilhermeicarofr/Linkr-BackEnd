@@ -11,4 +11,4 @@ app.use(express.json());
 
 app.use(userRouter);
 
-app.listen(process.env.PORT,  () => console.log(`listening on port ${process.env.PORT}...`))
+app.listen(process.env.PORT,  () => console.log(`listening on port ${process.env.PORT}...`));
