@@ -1,4 +1,4 @@
-CREATE TABLE "public.users" (
+CREATE TABLE "users" (
 	"id" serial NOT NULL,
 	"name" varchar(50) NOT NULL UNIQUE,
 	"email" varchar(100) NOT NULL UNIQUE,
@@ -13,7 +13,7 @@ CREATE TABLE "public.users" (
 
 
 
-CREATE TABLE "public.sessions" (
+CREATE TABLE "sessions" (
 	"id" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -25,7 +25,7 @@ CREATE TABLE "public.sessions" (
 
 
 
-CREATE TABLE "public.hashtags" (
+CREATE TABLE "hashtags" (
 	"id" serial NOT NULL,
 	"name" varchar(100) NOT NULL UNIQUE,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -37,7 +37,7 @@ CREATE TABLE "public.hashtags" (
 
 
 
-CREATE TABLE "public.posts" (
+CREATE TABLE "posts" (
 	"id" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"url" TEXT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE "public.posts" (
 
 
 
-CREATE TABLE "public.likes" (
+CREATE TABLE "likes" (
 	"id" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"postId" integer NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE "public.likes" (
 
 
 
-CREATE TABLE "public.postsHashtags" (
+CREATE TABLE "postsHashtags" (
 	"id" serial NOT NULL,
 	"hashtagId" integer NOT NULL,
 	"postId" integer NOT NULL,
