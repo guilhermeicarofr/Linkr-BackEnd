@@ -1,10 +1,10 @@
-import { getUserPostsRepository, getUsers } from "../repositories/user.repositories.js";
+import { getUserPostsRepository, getUsersRepository } from "../repositories/user.repositories.js";
 
 const userPostsController = async (req, res) => {
     const userId = req.params.id;
 
     try {
-        const user = await getUsers(userId);
+        const user = await getUsersRepository(userId);
 
         if(user.rowCount === 0) return res.sendStatus(404);
 

@@ -23,4 +23,4 @@ const getUserPostsRepository = async (userId) => {
     );
 };
 
-export {getUserPostsRepository, getUsers};
+export {getUserPostsRepository, getUsersRepository};
