@@ -1,4 +1,4 @@
-import schemaSignUp from "../schemas/users.js";
+import schemaSignUp from "../schemas/auth.schema.js";
 
 function validateSignUp(req, res, next) {
   const { email, name, password, picture } = req.body;
