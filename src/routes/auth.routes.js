@@ -6,8 +6,8 @@ import {
   validateSignIn,
 } from "../middlewares/validate.auth.js";
 
-const authRoutes = express.Router();
-authRoutes.post("/sign-up", validateSignUp, signUp);
-authRoutes.post("/sign-in", validateSignIn, signIn);
+const authRouter = express.Router();
+authRouter.post("/sign-up", validateSignUp, signUp);
+authRouter.post("/sign-in", validateSignIn, signIn);
 
-export { authRoutes };
+export { authRouter };
