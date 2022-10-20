@@ -1,15 +1,14 @@
 import { db } from "../database/database.js";
 
-const getUsersRepository = async (userId) => {
-    return db.query(
-        `SELECT id, name, picture FROM users WHERE id = $1;`,
-        [userId]
-    )
-};
+async function getUsersRepository(userId) {
+  return db.query(`SELECT id, name, picture FROM users WHERE id = $1;`, [
+    userId,
+  ]);
+}
 
-const getUserPostsRepository = async (userId) => {
-    return db.query(
-        `SELECT 
+async function getUserPostsRepository(userId) {
+  return db.query(
+    `SELECT 
             p."userId" AS "userId",
             u.name,
             u.picture,
@@ -20,8 +19,8 @@ const getUserPostsRepository = async (userId) => {
         JOIN users AS u ON u.id=p."userId"
         WHERE p."userId" = $1
         ORDER BY p."createdAt" DESC;`,
-        [userId]
-    );
-};
+    [userId]
+  );
+}
 
-export {getUserPostsRepository, getUsersRepository};
+export { getUserPostsRepository, getUsersRepository };

@@ -6,7 +6,7 @@ async function hashtagGetController(req, res) {
 
 		return res.status(200).send(trendings);
 	} catch (error) {
-		return res.status(500).send(error.message);
+		return res.sendStatus(500);
 	}
 }
 export { hashtagGetController };

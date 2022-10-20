@@ -18,7 +18,7 @@ async function signUp(req, res) {
     await insertUser(email, name, passwordHash, picture);
     res.sendStatus(201);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.sendStatus(500);
   }
 }
 async function signIn(req, res) {
@@ -41,7 +41,7 @@ async function signIn(req, res) {
     }
     res.sendStatus(401);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.sendStatus(500);
   }
 }
 

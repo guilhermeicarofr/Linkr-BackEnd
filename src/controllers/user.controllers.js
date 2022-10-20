@@ -2,7 +2,7 @@ import urlMetadata from "url-metadata";
 
 import { getUserPostsRepository, getUsersRepository } from "../repositories/user.repositories.js";
 
-const userPostsController = async (req, res) => {
+async function userPostsController (req, res) {
     const userId = req.params.id;
 
     try {
@@ -37,7 +37,7 @@ const userPostsController = async (req, res) => {
         return res.status(200).send(objectResponse);
 
     } catch (error) {
-        return res.status(500).send(error.message);
+        return res.sendStatus(500);
     }
 };
 
