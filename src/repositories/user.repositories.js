@@ -13,8 +13,8 @@ async function getUserPostsRepository(userId) {
             u.name,
             u.picture,
             p.id AS "postId", 
-            p.url, 
-            p.description
+            p.description,
+            p.url
         FROM posts AS p
         JOIN users AS u ON u.id=p."userId"
         WHERE p."userId" = $1

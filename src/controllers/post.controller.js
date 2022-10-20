@@ -1,3 +1,4 @@
+import urlMetadata from "url-metadata";
 import { insertNewPost, getPosts } from "../repositories/post.repository.js";
 
 async function createPost(req, res) {
@@ -12,14 +13,29 @@ async function createPost(req, res) {
   }
 }
 
-async function getTimelinePosts (req, res) {
+async function getTimelinePosts(req, res) {
   try {
     const posts = await getPosts();
 
-    return res.status(200).send(posts.rows);
+    const completePosts = await Promise.all(
+      posts.rows.map(async (post) => {
+        const { title, image, url, description } = await urlMetadata(post.url);
+        return {
+          ...post,
+          url: {
+            title,
+            image,
+            path: url,
+            description,
+          },
+        };
+      })
+    );
+
+    res.status(200).send(completePosts);
   } catch (error) {
     return res.sendStatus(500);
   }
-};
+}
 
 export { createPost, getTimelinePosts };
