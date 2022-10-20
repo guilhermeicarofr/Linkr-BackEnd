@@ -1,8 +1,7 @@
-import { insertNewPost } from "../repositories/post.repository.js";
+import { insertNewPost, getPosts} from "../repositories/post.repository.js";
 
 const createPost = async (req, res) => {
-  // TODO:Pegar o userId da validação(middleware) e corrigir no repository
-  //const userId = res.locals;
+  
   const { url, description } = req.body;
 
   try {
@@ -10,9 +9,19 @@ const createPost = async (req, res) => {
 
     return res.sendStatus(200);
   } catch (error) {
-    console.log(error.message);
     return res.sendStatus(500);
   }
 };
 
-export { createPost };
+const getTimelinePosts = async (req,res) => {
+
+  try {
+    const posts = await getPosts();
+
+    return res.status(200).send(posts.rows);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+}
+
+export { createPost, getTimelinePosts };
