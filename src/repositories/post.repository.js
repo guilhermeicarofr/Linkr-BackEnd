@@ -1,14 +1,14 @@
 import { db } from "../database/database.js";
 
-async function insertNewPost(url, description) {
+async function insertNewPost(userId, url, description) {
   return db.query(
     `INSERT INTO posts ("userId", url, description) VALUES ($1,$2, $3)`,
-    [1, url, description]
+    [userId, url, description]
   );
 }
 
 async function getPosts() {
-  return db.query (`SELECT 
+  return db.query(`SELECT 
                       p."userId" AS "userId",
                       u.name,
                       u.picture,
