@@ -9,7 +9,6 @@ const createPost = async (req, res) => {
 
     return res.sendStatus(200);
   } catch (error) {
-    console.log(error)
     return res.sendStatus(500);
   }
 };
@@ -21,7 +20,6 @@ const getTimelinePosts = async (req,res) => {
 
     return res.status(200).send(posts.rows);
   } catch (error) {
-    console.log(error)
     return res.sendStatus(500);
   }
 }
