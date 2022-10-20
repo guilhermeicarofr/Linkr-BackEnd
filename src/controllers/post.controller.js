@@ -1,12 +1,13 @@
+
 import urlMetadata from "url-metadata";
 import { insertNewPost, getPosts} from "../repositories/post.repository.js";
 
-const createPost = async (req, res) => {
-  
-  const { url, description } = req.body;
 
+const createPost = async (req, res) => {
+  const { url, description } = req.body;
+  const userId = res.locals.userId;
   try {
-    await insertNewPost(url, description);
+    await insertNewPost(userId, url, description);
 
     return res.sendStatus(200);
   } catch (error) {
@@ -14,8 +15,9 @@ const createPost = async (req, res) => {
   }
 };
 
-const getTimelinePosts = async (req,res) => {
-  
+
+const getTimelinePosts = async (req, res) => {
+
   try {
     const posts = await getPosts();
     
@@ -36,6 +38,6 @@ const getTimelinePosts = async (req,res) => {
   } catch (error) {
     return res.sendStatus(500);
   }
-}
+};
 
 export { createPost, getTimelinePosts };
