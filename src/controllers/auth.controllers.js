@@ -31,13 +31,16 @@ async function signIn(req, res) {
     ) {
       const token = jwt.sign(
         {
-          userId: user.rows[0].id,
-          picture: user.rows[0].picture,
-          name: user.rows[0].name,
+          userId: user.rows[0].id
         },
         process.env.JWT_SECRET
       );
-      return res.status(200).send(token);
+      return res.status(200).send({
+        token,
+        userId: user.rows[0].id,
+        picture: user.rows[0].picture,
+        name: user.rows[0].name,
+      });
     }
     res.sendStatus(401);
   } catch (error) {
