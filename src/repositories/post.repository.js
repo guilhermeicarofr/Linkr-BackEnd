@@ -12,9 +12,9 @@ async function getPosts() {
                       p."userId" AS "userId",
                       u.name,
                       u.picture,
-                      p.id AS "postId", 
-                      p.url, 
-                      p.description
+                      p.id AS "postId",
+                      p.description,
+                      p.url
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
                     ORDER BY p."createdAt" DESC
