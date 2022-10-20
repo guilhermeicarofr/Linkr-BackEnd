@@ -1,4 +1,4 @@
-import { insertNewPost } from "../repositories/post.repository.js";
+import { insertNewPost, getPosts} from "../repositories/post.repository.js";
 
 const createPost = async (req, res) => {
   
@@ -9,8 +9,21 @@ const createPost = async (req, res) => {
 
     return res.sendStatus(200);
   } catch (error) {
+    console.log(error)
     return res.sendStatus(500);
   }
 };
 
-export { createPost };
+const getTimelinePosts = async (req,res) => {
+
+  try {
+    const posts = await getPosts();
+
+    return res.status(200).send(posts.rows);
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500);
+  }
+}
+
+export { createPost, getTimelinePosts };

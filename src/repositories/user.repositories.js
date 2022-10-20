@@ -18,7 +18,8 @@ const getUserPostsRepository = async (userId) => {
             p.description
         FROM posts AS p
         JOIN users AS u ON u.id=p."userId"
-        WHERE p."userId" = $1;`,
+        WHERE p."userId" = $1
+        ORDER BY p."createdAt" DESC;`,
         [userId]
     );
 };

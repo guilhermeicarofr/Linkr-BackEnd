@@ -13,18 +13,6 @@ CREATE TABLE "users" (
 
 
 
-CREATE TABLE "sessions" (
-	"id" serial NOT NULL,
-	"userId" integer NOT NULL,
-	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
-	"deletedAt" TIMESTAMP DEFAULT NULL,
-	CONSTRAINT "sessions_pk" PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
 CREATE TABLE "hashtags" (
 	"id" serial NOT NULL,
 	"name" varchar(100) NOT NULL UNIQUE,
