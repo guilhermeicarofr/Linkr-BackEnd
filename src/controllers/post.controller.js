@@ -1,18 +1,18 @@
 import { insertNewPost, getPosts } from "../repositories/post.repository.js";
 
-const createPost = async (req, res) => {
+async function createPost(req, res) {
   const { url, description } = req.body;
   const userId = res.locals.userId;
-  try {
-    await insertNewPost(userId, url, description);
 
+  try {
+    await insertNewPost({ description, userId, url });
     return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);
   }
-};
+}
 
-const getTimelinePosts = async (req, res) => {
+async function getTimelinePosts (req, res) {
   try {
     const posts = await getPosts();
 

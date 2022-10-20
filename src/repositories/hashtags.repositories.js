@@ -1,6 +1,6 @@
 import { db } from "../database/database.js";
 
-const listHashtagRepository = async () => {
+async function listHashtagRepository () {
 	return db.query(
 		`SELECT h.name, COUNT(ph.id) AS quotes FROM hashtags h 
 		JOIN "postsHashtags" ph ON h.id = ph."hashtagId" 

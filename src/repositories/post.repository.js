@@ -1,6 +1,6 @@
 import { db } from "../database/database.js";
 
-async function insertNewPost(userId, url, description) {
+async function insertNewPost({ description, userId, url }) {
   return db.query(
     `INSERT INTO posts ("userId", url, description) VALUES ($1,$2, $3)`,
     [userId, url, description]
