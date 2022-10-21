@@ -1,12 +1,13 @@
 import urlMetadata from "url-metadata";
 import { insertNewPost, getPosts } from "../repositories/post.repository.js";
 import { getTag, insertNewTag, insertNewTagQuote } from "../repositories/hashtags.repositories.js";
+import { filterTags } from "../utils/filterTags.js";
 
 async function createPost(req, res) {
   const { url, description } = req.body;
   const userId = res.locals.userId;
 
-  const tags = description.split(' ').filter((word) => word[0]==='#' && word.length > 1).map((word) => word.slice(1));
+  const tags = filterTags(description);
 
   try {
     const postId = await insertNewPost({ description, userId, url });
