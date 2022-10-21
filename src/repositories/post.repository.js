@@ -21,4 +21,12 @@ async function getPosts() {
                     LIMIT 20;`);
 }
 
-export { insertNewPost, getPosts };
+async function listLikes (postId) {
+	return db.query(
+		`SELECT u.name,u.id FROM likes l 
+		JOIN users u ON l."userId" = u.id 
+		WHERE "postId" = $1;`,[postId]
+	);
+};
+
+export { insertNewPost, getPosts, listLikes };
