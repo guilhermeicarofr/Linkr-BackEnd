@@ -8,4 +8,18 @@ async function listHashtagRepository () {
 	);
 };
 
-export { listHashtagRepository };
+async function getTag(tag) {
+	return db.query(`SELECT h.id FROM hashtags h WHERE h.name=$1 LIMIT 1;`, [ tag ]);
+}
+
+async function insertNewTag(tag) {
+	return db.query(`INSERT INTO hashtags (name) VALUES ($1) RETURNING hashtags.id`, [ tag ]);
+}
+
+async function insertNewTagQuote({ post, tag }) {
+	return db.query(`INSERT INTO "postsHashtags" ("postId", "hashtagId") VALUES ($1, $2)`, [ post, tag ])
+}
+
+
+
+export { listHashtagRepository, getTag, insertNewTag, insertNewTagQuote };
