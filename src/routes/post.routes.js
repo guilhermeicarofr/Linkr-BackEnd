@@ -14,6 +14,7 @@ const postRouter = express.Router();
 postRouter.post("/post", validateSchema(postSchema), validateToken, createPost);
 postRouter.get("/timeline", validateToken, getTimelinePosts);
 postRouter.get("/likes/:postId", validateToken, getLikes);
-postRouter.post("/likes/:postId", validateToken,validatePost, changeLikes);
+postRouter.post("/likes/:postId", validateToken, validatePost, changeLikes);
+postRouter.put("/post/:id", validateToken, validatePost)
 
 export { postRouter };

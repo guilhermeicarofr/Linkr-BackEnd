@@ -77,6 +77,7 @@ async function getLikes(req, res) {
 		return res.sendStatus(500);
 	}
 }
+
 async function changeLikes(req, res) {
 	const postId = req.params.postId;
 	const userId = res.locals.userId;	
@@ -91,6 +92,12 @@ async function changeLikes(req, res) {
 	} catch {
 		return res.sendStatus(500);
 	}
+}
+
+async function deleteUserPost(req, res) {
+	const postId = req.params.id;
+	const userId = res.locals.userId;
+
 }
 
 export { createPost, getTimelinePosts, getLikes, changeLikes };
