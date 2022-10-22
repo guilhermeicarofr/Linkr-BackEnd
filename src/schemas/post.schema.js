@@ -8,7 +8,7 @@ const postSchema = joi.object({
       /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
     )
     .required(),
-  description: joi.string().max(250).trim(),
+  description: joi.string().min(0).max(250).trim(),
 });
 
 export { postSchema };

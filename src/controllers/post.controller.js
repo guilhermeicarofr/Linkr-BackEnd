@@ -14,8 +14,11 @@ import { filterTags } from "../utils/filterTags.js";
 async function createPost(req, res) {
 	const { url, description } = req.body;
 	const userId = res.locals.userId;
+	let tags = [];
 
-	const tags = filterTags(description);
+	if(description) {
+		tags = filterTags(description);
+	}
 
 	try {
 		const postId = await insertNewPost({ description, userId, url });
