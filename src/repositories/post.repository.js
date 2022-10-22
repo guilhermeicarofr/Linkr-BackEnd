@@ -21,6 +21,12 @@ async function getPosts() {
                     LIMIT 20;`);
 }
 
+async function getPostById (postId) {	
+	return db.query(
+		`SELECT * FROM posts WHERE "id" = $1;`,[postId]
+	);
+};
+
 async function listLikes (postId) {
 	return db.query(
 		`SELECT u.name,u.id FROM likes l 
@@ -29,4 +35,22 @@ async function listLikes (postId) {
 	);
 };
 
-export { insertNewPost, getPosts, listLikes };
+async function getLikeByIds ({postId,userId}) {
+	return db.query(
+		`SELECT * FROM likes WHERE "postId" = $1 AND "userId" = $2;`,[postId,userId]
+	);
+};
+
+async function insertLike ({postId,userId}) {
+	return db.query(
+		`INSERT INTO likes ("postId","userId") VALUES ($1,$2);`,[postId,userId]
+	);
+};
+
+async function deleteLike ({postId,userId}) {
+	return db.query(
+		`DELETE FROM likes WHERE "postId" = $1 AND "userId" = $2;`,[postId,userId]
+	);
+};
+
+export { insertNewPost, getPosts,getPostById, listLikes, getLikeByIds, insertLike, deleteLike };
