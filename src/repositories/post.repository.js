@@ -22,37 +22,50 @@ async function getPosts() {
                     LIMIT 20;`);
 }
 
+
 async function getPostById (postId) {	
 	return db.query(
 		`SELECT * FROM posts WHERE "id" = $1 AND "deletedAt" IS NULL;`,[postId]
 	);
 };
 
-async function listLikes (postId) {
-	return db.query(
-		`SELECT u.name,u.id FROM likes l 
+async function listLikes(postId) {
+  return db.query(
+    `SELECT u.name,u.id FROM likes l 
 		JOIN users u ON l."userId" = u.id 
-		WHERE "postId" = $1;`,[postId]
-	);
-};
+		WHERE "postId" = $1;`,
+    [postId]
+  );
+}
 
-async function getLikeByIds ({postId,userId}) {
-	return db.query(
-		`SELECT * FROM likes WHERE "postId" = $1 AND "userId" = $2;`,[postId,userId]
-	);
-};
+async function getLikeByIds({ postId, userId }) {
+  return db.query(
+    `SELECT * FROM likes WHERE "postId" = $1 AND "userId" = $2;`,
+    [postId, userId]
+  );
+}
 
-async function insertLike ({postId,userId}) {
-	return db.query(
-		`INSERT INTO likes ("postId","userId") VALUES ($1,$2);`,[postId,userId]
-	);
-};
+async function insertLike({ postId, userId }) {
+  return db.query(`INSERT INTO likes ("postId","userId") VALUES ($1,$2);`, [
+    postId,
+    userId,
+  ]);
+}
 
-async function deleteLike ({postId,userId}) {
-	return db.query(
-		`DELETE FROM likes WHERE "postId" = $1 AND "userId" = $2;`,[postId,userId]
-	);
-};
+async function deleteLike({ postId, userId }) {
+  return db.query(`DELETE FROM likes WHERE "postId" = $1 AND "userId" = $2;`, [
+    postId,
+    userId,
+  ]);
+}
+
+async function updatePost({ description, postId }) {
+  return db.query(`UPDATE posts SET description =$1 WHERE id = $2;`, [
+    description,
+    postId,
+  ]);
+}
+
 
 async function deletePostRepository ({postId,userId}) {
 	return db.query(
@@ -88,5 +101,6 @@ export {
 	deleteLike, 
 	deletePostRepository,
 	deletePostsHashtagsRepository,
-	deletePostLikesRespository
+	deletePostLikesRespository,
+  updatePost,
 };
