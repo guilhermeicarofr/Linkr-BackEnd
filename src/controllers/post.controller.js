@@ -102,11 +102,15 @@ async function editPosts(req, res) {
   const { description } = req.body;
   const postId = req.params.postId;
 
-  if (!description || !postId) {
+  let tags = [];
+
+  if (!postId) {
     return res.sendStatus(404);
   }
 
-  let tags = filterTags(description);
+  if (description) {
+    tags = filterTags(description);
+  }
 
   try {
     await updatePost({ description, postId });
