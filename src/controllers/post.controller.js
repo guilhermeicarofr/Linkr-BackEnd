@@ -9,6 +9,7 @@ import {
   updatePost,
 } from "../repositories/post.repository.js";
 import {
+  deleteTag,
   getTag,
   insertNewTag,
   insertNewTagQuote,
@@ -100,13 +101,34 @@ async function changeLikes(req, res) {
 async function editPosts(req, res) {
   const { description } = req.body;
   const postId = req.params.postId;
+  let tags = [];
 
   if (!description || !postId) {
     return res.sendStatus(404);
   }
 
+  if (description) {
+    tags = filterTags(description);
+  }
+
   try {
     await updatePost({ description, postId });
+    await deleteTag(postId);
+
+    if (tags.length) {
+      await tags.forEach(async (tag) => {
+        let tagId = await getTag(tag);
+        if (!tagId?.rows.length) {
+          tagId = await insertNewTag(tag);
+        }
+
+        await insertNewTagQuote({
+          post: postId,
+          tag: tagId?.rows[0]?.id,
+        });
+      });
+    }
+
     return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);
