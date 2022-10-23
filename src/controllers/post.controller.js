@@ -112,7 +112,7 @@ async function deleteUserPost(req, res) {
 		return res.sendStatus(200);
 
 	} catch (error) {
-		return res.status(500).send(error.message);
+		return res.sendStatus(500);
 	}
 }
 
