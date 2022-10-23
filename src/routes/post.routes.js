@@ -2,6 +2,7 @@ import express from "express";
 import {
 	changeLikes,
 	createPost,
+	deleteUserPost,
 	getLikes,
 	getTimelinePosts,
 } from "../controllers/post.controller.js";
@@ -15,6 +16,6 @@ postRouter.post("/post", validateSchema(postSchema), validateToken, createPost);
 postRouter.get("/timeline", validateToken, getTimelinePosts);
 postRouter.get("/likes/:postId", validateToken, getLikes);
 postRouter.post("/likes/:postId", validateToken, validatePost, changeLikes);
-postRouter.put("/post/:id", validateToken, validatePost)
+postRouter.delete("/post/:postId", validateToken, validatePost, deleteUserPost);
 
 export { postRouter };

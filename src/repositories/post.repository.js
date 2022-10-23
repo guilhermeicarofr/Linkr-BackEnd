@@ -17,13 +17,14 @@ async function getPosts() {
                       p.url
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
+					WHERE p."deletedAt" IS NULL
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`);
 }
 
 async function getPostById (postId) {	
 	return db.query(
-		`SELECT * FROM posts WHERE "id" = $1;`,[postId]
+		`SELECT * FROM posts WHERE "id" = $1 AND "deletedAt" IS NULL;`,[postId]
 	);
 };
 
@@ -53,4 +54,23 @@ async function deleteLike ({postId,userId}) {
 	);
 };
 
-export { insertNewPost, getPosts,getPostById, listLikes, getLikeByIds, insertLike, deleteLike };
+async function deletePostRepository ({postId,userId}) {
+	return db.query(
+		`UPDATE 
+			posts AS p
+		SET "deletedAt" = NOW()
+		WHERE id = $1 AND "userId" = $2;`,
+		[postId, userId]
+	);	
+}
+
+export { 
+	insertNewPost,
+	getPosts,
+	getPostById, 
+	listLikes, 
+	getLikeByIds, 
+	insertLike, 
+	deleteLike, 
+	deletePostRepository 
+};

@@ -6,6 +6,7 @@ import {
 	insertLike,
 	getLikeByIds,
 	deleteLike,
+	deletePostRepository,
 } from "../repositories/post.repository.js";
 import {
 	getTag,
@@ -95,9 +96,15 @@ async function changeLikes(req, res) {
 }
 
 async function deleteUserPost(req, res) {
-	const postId = req.params.id;
+	const postId = req.params.postId;
 	const userId = res.locals.userId;
 
+	try {
+		await deletePostRepository({postId, userId});
+		return res.sendStatus(200);
+	} catch (error) {
+		return res.sendStatus(500);
+	}
 }
 
-export { createPost, getTimelinePosts, getLikes, changeLikes };
+export { createPost, getTimelinePosts, getLikes, changeLikes, deleteUserPost };
