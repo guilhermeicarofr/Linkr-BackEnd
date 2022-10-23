@@ -116,7 +116,7 @@ async function editPosts(req, res) {
 
   try {
     await updatePost({ description, postId });
-    await deleteTag(postId);
+    await deletePostsHashtagsRepository(postId);
 
     if (tags.length) {
       await tags.forEach(async (tag) => {
