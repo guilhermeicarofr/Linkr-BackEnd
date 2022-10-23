@@ -14,7 +14,6 @@ import {
 
 } from "../repositories/post.repository.js";
 import {
-  deleteTag,
   getTag,
   insertNewTag,
   insertNewTagQuote,
