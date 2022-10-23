@@ -28,16 +28,9 @@ async function insertNewTagQuote({ post, tag }) {
   );
 }
 
-async function deleteTag(postId) {
-  return db.query(`DELETE FROM "postsHashtags" p WHERE p."postId"=$1;`, [
-    postId,
-  ]);
-}
-
 export {
   listHashtagRepository,
   getTag,
   insertNewTag,
   insertNewTagQuote,
-  deleteTag,
 };
