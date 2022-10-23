@@ -101,15 +101,12 @@ async function changeLikes(req, res) {
 async function editPosts(req, res) {
   const { description } = req.body;
   const postId = req.params.postId;
-  let tags = [];
 
   if (!description || !postId) {
     return res.sendStatus(404);
   }
 
-  if (description) {
-    tags = filterTags(description);
-  }
+  let tags = filterTags(description);
 
   try {
     await updatePost({ description, postId });
