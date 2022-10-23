@@ -1,9 +1,10 @@
 import express from "express";
 import {
-	changeLikes,
-	createPost,
-	getLikes,
-	getTimelinePosts,
+  changeLikes,
+  createPost,
+  editPosts,
+  getLikes,
+  getTimelinePosts,
 } from "../controllers/post.controller.js";
 import { validateSchema } from "../middlewares/schema.middleware.js";
 import { validatePost } from "../middlewares/validate.post.js";
@@ -14,6 +15,7 @@ const postRouter = express.Router();
 postRouter.post("/post", validateSchema(postSchema), validateToken, createPost);
 postRouter.get("/timeline", validateToken, getTimelinePosts);
 postRouter.get("/likes/:postId", validateToken, getLikes);
-postRouter.post("/likes/:postId", validateToken,validatePost, changeLikes);
+postRouter.post("/likes/:postId", validateToken, validatePost, changeLikes);
+postRouter.put("/post/update/:postId", validateToken, validatePost, editPosts);
 
 export { postRouter };
