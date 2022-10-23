@@ -104,10 +104,6 @@ async function editPosts(req, res) {
 
   let tags = [];
 
-  if (!postId) {
-    return res.sendStatus(404);
-  }
-
   if (description) {
     tags = filterTags(description);
   }
