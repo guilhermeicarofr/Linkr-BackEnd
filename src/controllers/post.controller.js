@@ -7,6 +7,8 @@ import {
 	getLikeByIds,
 	deleteLike,
 	deletePostRepository,
+	deletePostLikesRespository,
+	deletePostsHashtagsRepository,
 } from "../repositories/post.repository.js";
 import {
 	getTag,
@@ -101,9 +103,13 @@ async function deleteUserPost(req, res) {
 
 	try {
 		await deletePostRepository({postId, userId});
+		await deletePostsHashtagsRepository(postId);
+		await deletePostLikesRespository(postId);
+
 		return res.sendStatus(200);
+
 	} catch (error) {
-		return res.sendStatus(500);
+		return res.status(500).send(error.message);
 	}
 }
 

@@ -64,6 +64,20 @@ async function deletePostRepository ({postId,userId}) {
 	);	
 }
 
+async function deletePostsHashtagsRepository (postId) {
+	return db.query(
+		`DELETE FROM "postsHashtags" WHERE "postId" = $1;`,
+		[postId]
+	);
+}
+
+async function deletePostLikesRespository (postId) {
+	return db.query(
+		`DELETE FROM likes WHERE "postId" = $1;`,
+		[postId]
+	);
+}
+
 export { 
 	insertNewPost,
 	getPosts,
@@ -72,5 +86,7 @@ export {
 	getLikeByIds, 
 	insertLike, 
 	deleteLike, 
-	deletePostRepository 
+	deletePostRepository,
+	deletePostsHashtagsRepository,
+	deletePostLikesRespository
 };
