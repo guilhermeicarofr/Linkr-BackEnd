@@ -17,13 +17,17 @@ async function getPosts() {
                       p.url
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
+					WHERE p."deletedAt" IS NULL
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`);
 }
 
-async function getPostById(postId) {
-  return db.query(`SELECT * FROM posts WHERE "id" = $1;`, [postId]);
-}
+
+async function getPostById (postId) {	
+	return db.query(
+		`SELECT * FROM posts WHERE "id" = $1 AND "deletedAt" IS NULL;`,[postId]
+	);
+};
 
 async function listLikes(postId) {
   return db.query(
@@ -62,13 +66,41 @@ async function updatePost({ description, postId }) {
   ]);
 }
 
-export {
-  insertNewPost,
-  getPosts,
-  getPostById,
-  listLikes,
-  getLikeByIds,
-  insertLike,
-  deleteLike,
+
+async function deletePostRepository ({postId,userId}) {
+	return db.query(
+		`UPDATE 
+			posts AS p
+		SET "deletedAt" = NOW()
+		WHERE id = $1 AND "userId" = $2;`,
+		[postId, userId]
+	);	
+}
+
+async function deletePostsHashtagsRepository (postId) {
+	return db.query(
+		`DELETE FROM "postsHashtags" WHERE "postId" = $1;`,
+		[postId]
+	);
+}
+
+async function deletePostLikesRespository (postId) {
+	return db.query(
+		`DELETE FROM likes WHERE "postId" = $1;`,
+		[postId]
+	);
+}
+
+export { 
+	insertNewPost,
+	getPosts,
+	getPostById, 
+	listLikes, 
+	getLikeByIds, 
+	insertLike, 
+	deleteLike, 
+	deletePostRepository,
+	deletePostsHashtagsRepository,
+	deletePostLikesRespository,
   updatePost,
 };

@@ -1,12 +1,17 @@
 import urlMetadata from "url-metadata";
 import {
-  insertNewPost,
-  getPosts,
-  listLikes,
-  insertLike,
-  getLikeByIds,
-  deleteLike,
+
+	insertNewPost,
+	getPosts,
+	listLikes,
+	insertLike,
+	getLikeByIds,
+	deleteLike,
+	deletePostRepository,
+	deletePostLikesRespository,
+	deletePostsHashtagsRepository,
   updatePost,
+
 } from "../repositories/post.repository.js";
 import {
   deleteTag,
@@ -82,6 +87,7 @@ async function getLikes(req, res) {
     return res.sendStatus(500);
   }
 }
+
 async function changeLikes(req, res) {
   const postId = req.params.postId;
   const userId = res.locals.userId;
@@ -132,4 +138,21 @@ async function editPosts(req, res) {
   }
 }
 
-export { createPost, getTimelinePosts, getLikes, changeLikes, editPosts };
+
+async function deleteUserPost(req, res) {
+	const postId = req.params.postId;
+	const userId = res.locals.userId;
+
+	try {
+		await deletePostRepository({postId, userId});
+		await deletePostsHashtagsRepository(postId);
+		await deletePostLikesRespository(postId);
+
+		return res.sendStatus(200);
+
+	} catch (error) {
+		return res.sendStatus(500);
+	}
+}
+
+export { createPost, getTimelinePosts, getLikes, changeLikes, deleteUserPost, editPosts  };

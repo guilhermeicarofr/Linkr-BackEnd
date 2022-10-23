@@ -1,10 +1,11 @@
 import express from "express";
 import {
-  changeLikes,
-  createPost,
+	changeLikes,
+	createPost,
+	deleteUserPost,
   editPosts,
-  getLikes,
-  getTimelinePosts,
+	getLikes,
+	getTimelinePosts,
 } from "../controllers/post.controller.js";
 import { validateSchema } from "../middlewares/schema.middleware.js";
 import { validatePost } from "../middlewares/validate.post.js";
@@ -17,5 +18,6 @@ postRouter.get("/timeline", validateToken, getTimelinePosts);
 postRouter.get("/likes/:postId", validateToken, getLikes);
 postRouter.post("/likes/:postId", validateToken, validatePost, changeLikes);
 postRouter.put("/post/update/:postId", validateToken, validatePost, editPosts);
+postRouter.delete("/post/:postId", validateToken, validatePost, deleteUserPost);
 
 export { postRouter };
