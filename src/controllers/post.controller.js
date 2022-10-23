@@ -6,6 +6,9 @@ import {
 	insertLike,
 	getLikeByIds,
 	deleteLike,
+	deletePostRepository,
+	deletePostLikesRespository,
+	deletePostsHashtagsRepository,
 } from "../repositories/post.repository.js";
 import {
 	getTag,
@@ -80,6 +83,7 @@ async function getLikes(req, res) {
 		return res.sendStatus(500);
 	}
 }
+
 async function changeLikes(req, res) {
 	const postId = req.params.postId;
 	const userId = res.locals.userId;	
@@ -96,4 +100,20 @@ async function changeLikes(req, res) {
 	}
 }
 
-export { createPost, getTimelinePosts, getLikes, changeLikes };
+async function deleteUserPost(req, res) {
+	const postId = req.params.postId;
+	const userId = res.locals.userId;
+
+	try {
+		await deletePostRepository({postId, userId});
+		await deletePostsHashtagsRepository(postId);
+		await deletePostLikesRespository(postId);
+
+		return res.sendStatus(200);
+
+	} catch (error) {
+		return res.sendStatus(500);
+	}
+}
+
+export { createPost, getTimelinePosts, getLikes, changeLikes, deleteUserPost };
