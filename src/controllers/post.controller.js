@@ -3,6 +3,9 @@ import {
 	insertNewPost,
 	getPosts,
 	listLikes,
+	insertLike,
+	getLikeByIds,
+	deleteLike,
 } from "../repositories/post.repository.js";
 import {
 	getTag,
@@ -14,8 +17,11 @@ import { filterTags } from "../utils/filterTags.js";
 async function createPost(req, res) {
 	const { url, description } = req.body;
 	const userId = res.locals.userId;
+	let tags = [];
 
-	const tags = filterTags(description);
+	if(description) {
+		tags = filterTags(description);
+	}
 
 	try {
 		const postId = await insertNewPost({ description, userId, url });
@@ -67,12 +73,27 @@ async function getTimelinePosts(req, res) {
 
 async function getLikes(req, res) {
 	const postId = req.params.postId;
-	try {		
-		const likes = (await listLikes(postId)).rows;		
+	try {
+		const likes = (await listLikes(postId)).rows;
 		return res.status(200).send(likes);
 	} catch {
 		return res.sendStatus(500);
 	}
 }
+async function changeLikes(req, res) {
+	const postId = req.params.postId;
+	const userId = res.locals.userId;	
+	try {
+		const like = (await getLikeByIds({ postId, userId })).rows;
+		if (like.length === 0) {
+			await insertLike({ postId, userId });
+			return res.sendStatus(201);
+		}
+		await deleteLike({ postId, userId });
+		return res.sendStatus(204);
+	} catch {
+		return res.sendStatus(500);
+	}
+}
 
-export { createPost, getTimelinePosts, getLikes };
+export { createPost, getTimelinePosts, getLikes, changeLikes };
