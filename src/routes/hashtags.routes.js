@@ -1,8 +1,10 @@
 import express from "express";
-import { hashtagGetController } from "../controllers/hashtags.controllers.js";
+import { getHashtags, getHashtagsByName } from "../controllers/hashtags.controllers.js";
+import { validateToken } from "../middlewares/validate.token.js";
 
 const hashtagsRouter = express.Router();
 
-hashtagsRouter.get("/hashtag", hashtagGetController);
+hashtagsRouter.get("/hashtag",validateToken, getHashtags);
+hashtagsRouter.get("/hashtag/:hashtag",validateToken, getHashtagsByName);
 
 export { hashtagsRouter };

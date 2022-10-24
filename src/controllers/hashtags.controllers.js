@@ -1,6 +1,8 @@
-import { listHashtagRepository } from "../repositories/hashtags.repositories.js";
+import urlMetadata from "url-metadata";
 
-async function hashtagGetController(req, res) {
+import { listHashtagPosts, listHashtagRepository } from "../repositories/hashtags.repositories.js";
+
+async function getHashtags(req, res) {
 	try {
 		const trendings = (await listHashtagRepository()).rows;
 
@@ -9,4 +11,33 @@ async function hashtagGetController(req, res) {
 		return res.sendStatus(500);
 	}
 }
-export { hashtagGetController };
+
+async function getHashtagsByName(req, res) {
+	const hashtag = req.params.hashtag;
+	try {
+	  const hashtagPosts = await listHashtagPosts(hashtag);
+	  if (hashtagPosts.rowCount === 0) return res.sendStatus(404);
+	  const completePosts = await Promise.all(
+		hashtagPosts.rows.map(async (post) => {
+		  const { title, image, url, description } = await urlMetadata(post.url);
+		  return {
+			...post,
+			url: {
+			  title,
+			  image,
+			  path: url,
+			  description,
+			},
+		  };
+		})
+	  );
+  
+	  res.status(200).send(completePosts);
+	} catch (error) {
+		console.log(error)
+	  return res.sendStatus(500);
+	}
+  }
+  
+
+export { getHashtags,getHashtagsByName };
