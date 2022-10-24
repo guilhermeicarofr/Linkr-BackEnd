@@ -23,4 +23,17 @@ async function getUserPostsRepository(userId) {
   );
 }
 
-export { getUserPostsRepository, getUsersRepository };
+async function listUsersByName(name) {
+  return db.query(
+    `SELECT 
+            u.id,
+            u.name,
+            u.picture,           
+        FROM users AS u        
+        WHERE  u.name ILIKE $1 AND u."deletedAt" IS NULL
+        ORDER BY u.name DESC;`,
+    [`${name}%`]
+  );
+}
+
+export { getUserPostsRepository, getUsersRepository, listUsersByName };
