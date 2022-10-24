@@ -46,13 +46,11 @@ async function userPostsController(req, res) {
 	}
 }
 async function getUsersByName(req, res) {
-	const name = req.query.name;
-	if (!name) return res.send([]);
-
+	const name = req.query.name;   
+	if (!name) return res.sendStatus(422); 
 	try {
-		const users = (await listUsersByName(userId)).rows;
-
-		return res.status(200).send(users);
+		const users = (await listUsersByName(name)).rows;    
+		res.status(200).send(users);
 	} catch (error) {
 		return res.sendStatus(500);
 	}
