@@ -1,4 +1,5 @@
 import express from "express";
+
 import { getHashtags, getHashtagsByName } from "../controllers/hashtags.controllers.js";
 import { validateToken } from "../middlewares/validate.token.js";
 
