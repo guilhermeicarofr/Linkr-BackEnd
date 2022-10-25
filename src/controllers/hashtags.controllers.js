@@ -1,10 +1,10 @@
 import urlMetadata from "url-metadata";
 
-import { listHashtagPosts, listHashtagRepository } from "../repositories/hashtags.repositories.js";
+import { listHashtagPosts, listHashtags } from "../repositories/hashtags.repositories.js";
 
 async function getHashtags(req, res) {
 	try {
-		const trendings = (await listHashtagRepository()).rows;
+		const trendings = (await listHashtags()).rows;
 
 		return res.status(200).send(trendings);
 	} catch (error) {

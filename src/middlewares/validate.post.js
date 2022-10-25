@@ -1,6 +1,5 @@
 import { getPostById } from "../repositories/post.repository.js";
 
-
 async function validatePost(req, res, next) {
 	const postId = req.params.postId; 
 	   

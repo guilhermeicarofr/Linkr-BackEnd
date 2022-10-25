@@ -1,12 +1,14 @@
 import express from "express";
+
 import {
 	changeLikes,
 	createPost,
 	deleteUserPost,
-  editPosts,
+	editPosts,
 	getLikes,
-	getTimelinePosts,
+	getTimelinePosts
 } from "../controllers/post.controller.js";
+
 import { validateSchema } from "../middlewares/schema.middleware.js";
 import { validatePost } from "../middlewares/validate.post.js";
 import { validateToken } from "../middlewares/validate.token.js";

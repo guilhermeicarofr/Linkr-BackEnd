@@ -1,4 +1,5 @@
 import express from "express";
+
 import { getUsersByName, userPostsController } from "../controllers/user.controllers.js";
 import { validateToken } from "../middlewares/validate.token.js";
 

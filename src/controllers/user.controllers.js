@@ -1,8 +1,8 @@
 import urlMetadata from "url-metadata";
 
 import {
-  getUserPostsRepository,
-  getUsersRepository,
+  listUserPosts,
+  getUser,
   listUsersByName,
 } from "../repositories/user.repositories.js";
 
@@ -10,11 +10,11 @@ async function userPostsController(req, res) {
   const userId = req.params.id;
 
   try {
-    const user = await getUsersRepository(userId);
+    const user = await getUser(userId);
 
     if (user.rowCount === 0) return res.sendStatus(404);
 
-    const userPosts = await getUserPostsRepository(userId);
+    const userPosts = await listUserPosts(userId);
 
     const completePosts = await Promise.all(
       userPosts.rows.map(async (post) => {

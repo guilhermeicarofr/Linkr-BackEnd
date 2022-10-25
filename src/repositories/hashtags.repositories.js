@@ -1,6 +1,6 @@
 import { db } from "../database/database.js";
 
-async function listHashtagRepository() {
+async function listHashtags() {
 	return db.query(
 		`SELECT h.name, COUNT(ph.id) AS quotes FROM hashtags h 
 		JOIN "postsHashtags" ph ON h.id = ph."hashtagId" 
@@ -48,9 +48,9 @@ async function listHashtagPosts(hashtag) {
 }
 
 export {
-	listHashtagRepository,
+	listHashtags,
 	getTag,
 	insertNewTag,
 	insertNewTagQuote,
-	listHashtagPosts,
+	listHashtagPosts
 };
