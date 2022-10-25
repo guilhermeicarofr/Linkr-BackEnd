@@ -10,7 +10,7 @@ import {
 	deletePostLikes,
 	deletePostsHashtags,
   updatePost
-} from "../repositories/post.repository.js";
+} from "../repositories/post.repositories.js";
 
 import {
   getTag,

@@ -7,7 +7,7 @@ import {
 	editPosts,
 	getLikes,
 	getTimelinePosts
-} from "../controllers/post.controller.js";
+} from "../controllers/post.controllers.js";
 
 import { validateSchema } from "../middlewares/schema.middleware.js";
 import { validatePost } from "../middlewares/validate.post.js";
