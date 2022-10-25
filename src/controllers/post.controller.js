@@ -82,7 +82,7 @@ async function getLikes(req, res) {
   try {
     const likes = (await listLikes(postId)).rows;
     return res.status(200).send(likes);
-  } catch {
+  } catch (error) {
     return res.sendStatus(500);
   }
 }
@@ -98,7 +98,7 @@ async function changeLikes(req, res) {
     }
     await deleteLike({ postId, userId });
     return res.sendStatus(204);
-  } catch {
+  } catch (error) {
     return res.sendStatus(500);
   }
 }

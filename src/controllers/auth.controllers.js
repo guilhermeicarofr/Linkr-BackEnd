@@ -8,7 +8,7 @@ import {
 } from "../repositories/auth.repositories.js";
 
 async function signUp(req, res) {
-  const { email, name, password, picture } = res.locals.body;
+  const { email, name, password, picture } = req.body;
   const passwordHash = bcrypt.hashSync(password, 10);
   try {
     const user = await getUserByEmail(email);
@@ -22,7 +22,7 @@ async function signUp(req, res) {
   }
 }
 async function signIn(req, res) {
-  const { email, password } = res.locals.body;
+  const { email, password } = req.body;
   try {
     const user = await getUserByEmail(email);
     if (

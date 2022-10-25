@@ -1,13 +1,12 @@
 import express from "express";
 
+import { validateSchema } from "../middlewares/schema.middleware.js";
+import { schemaSignIn, schemaSignUp } from "../schemas/auth.schema.js";
+
 import { signUp, signIn } from "../controllers/auth.controllers.js";
-import {
-  validateSignUp,
-  validateSignIn,
-} from "../middlewares/validate.auth.js";
 
 const authRouter = express.Router();
-authRouter.post("/sign-up", validateSignUp, signUp);
-authRouter.post("/sign-in", validateSignIn, signIn);
+authRouter.post("/sign-up", validateSchema(schemaSignUp), signUp);
+authRouter.post("/sign-in", validateSchema(schemaSignIn), signIn);
 
 export { authRouter };

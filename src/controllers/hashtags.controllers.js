@@ -34,7 +34,6 @@ async function getHashtagsByName(req, res) {
   
 	  res.status(200).send(completePosts);
 	} catch (error) {
-		console.log(error)
 	  return res.sendStatus(500);
 	}
   }
