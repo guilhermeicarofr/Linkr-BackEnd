@@ -6,7 +6,7 @@ import {
   listUsersByName,
 } from "../repositories/user.repositories.js";
 
-async function userPostsController(req, res) {
+async function getUserPosts(req, res) {
   const userId = req.params.id;
 
   try {
@@ -65,4 +65,4 @@ async function getUsersByName(req, res) {
   }
 }
 
-export { userPostsController, getUsersByName };
+export { getUserPosts, getUsersByName };
