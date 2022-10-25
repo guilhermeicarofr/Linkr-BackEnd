@@ -58,22 +58,32 @@ async function getTimelinePosts(req, res) {
 
     const completePosts = await Promise.all(
       posts.rows.map(async (post) => {
-        const { title, image, url, description } = await urlMetadata(post.url);
+        let url = {};
+        await urlMetadata(post.url).then((meta) => {
+          url = { 
+            title: meta.title,
+            image: meta.image,
+            path: meta.url,
+            description: meta.description
+          }})
+        .catch((error) => {
+          url = { 
+            title: "Preview not available",
+            image: "",
+            path: post.url,
+            description: "This link has no description"
+          }
+        });
+
         return {
           ...post,
-          url: {
-            title,
-            image,
-            path: url,
-            description,
-          },
+          url
         };
       })
     );
 
     res.status(200).send(completePosts);
   } catch (error) {
-    console.log(error)
     return res.sendStatus(500);
   }
 }
