@@ -18,15 +18,26 @@ async function userPostsController(req, res) {
 
     const completePosts = await Promise.all(
       userPosts.rows.map(async (post) => {
-        const { title, image, url, description } = await urlMetadata(post.url);
+        let url = {};
+        await urlMetadata(post.url).then((meta) => {
+          url = { 
+            title: meta.title,
+            image: meta.image,
+            path: meta.url,
+            description: meta.description
+          }})
+        .catch((error) => {
+          url = { 
+            title: "Preview not available",
+            image: "",
+            path: post.url,
+            description: "This link has no description"
+          }
+        });
+
         return {
           ...post,
-          url: {
-            title,
-            image,
-            path: url,
-            description,
-          },
+          url
         };
       })
     );

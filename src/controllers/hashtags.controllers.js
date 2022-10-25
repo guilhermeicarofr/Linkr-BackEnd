@@ -15,28 +15,40 @@ async function getHashtags(req, res) {
 async function getHashtagsByName(req, res) {
 	const hashtag = req.params.hashtag;
 	try {
-	  const hashtagPosts = await listHashtagPosts(hashtag);
-	  if (hashtagPosts.rowCount === 0) return res.sendStatus(404);
-	  const completePosts = await Promise.all(
-		hashtagPosts.rows.map(async (post) => {
-		  const { title, image, url, description } = await urlMetadata(post.url);
-		  return {
-			...post,
-			url: {
-			  title,
-			  image,
-			  path: url,
-			  description,
-			},
-		  };
-		})
-	  );
-  
-	  res.status(200).send(completePosts);
-	} catch (error) {
-	  return res.sendStatus(500);
-	}
-  }
-  
+		const hashtagPosts = await listHashtagPosts(hashtag);
+		if (hashtagPosts.rowCount === 0) return res.sendStatus(404);
 
-export { getHashtags,getHashtagsByName };
+		const completePosts = await Promise.all(
+			hashtagPosts.rows.map(async (post) => {
+				let url = {};
+				await urlMetadata(post.url).then((meta) => {
+					url = {
+						title: meta.title,
+						image: meta.image,
+						path: meta.url,
+						description: meta.description
+					}
+				})
+					.catch((error) => {
+						url = {
+							title: "Preview not available",
+							image: "",
+							path: post.url,
+							description: "This link has no description"
+						}
+					});
+
+				return {
+					...post,
+					url
+				};
+			})
+		);
+
+		res.status(200).send(completePosts);
+	} catch (error) {
+		return res.sendStatus(500);
+	}
+}
+
+export { getHashtags, getHashtagsByName };
