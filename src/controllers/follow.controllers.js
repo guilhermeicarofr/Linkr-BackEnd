@@ -16,7 +16,7 @@ async function postFollow(req, res) {
         return res.sendStatus(204);
        
     } catch (error) {
-        return res.status(500).send(error.message);
+        return res.status(500);
     }
 };
 
