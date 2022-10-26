@@ -1,10 +1,10 @@
 import { db } from "../database/database.js";
 import sanitizer from "../utils/sanitizer.js"
 
-async function insertUser({email, name, passwordHash, picture}) {
+async function insertUser({email, name, password, picture}) {
   return db.query(
     "INSERT INTO users (email,name,password,picture) VALUES ($1,$2,$3,$4)",
-    [email, sanitizer(name), passwordHash, picture]
+    [email, sanitizer(name), password, picture]
   );
 }
 async function getUserByEmail(email) {
