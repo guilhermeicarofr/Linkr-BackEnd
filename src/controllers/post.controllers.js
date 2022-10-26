@@ -1,4 +1,5 @@
 import urlMetadata from "url-metadata";
+
 import {
 	insertNewPost,
 	listPosts,
@@ -30,7 +31,7 @@ async function createPost(req, res) {
   }
 
   try {
-    const postId = await insertNewPost({ description, userId, url });
+    const postId = await insertNewPost({description, userId, url });
 
     if (tags.length) {
       await tags.forEach(async (tag) => {

@@ -1,4 +1,5 @@
 import joi from "joi";
+import { stripHtml } from "string-strip-html";
 
 const schemaSignUp = joi.object({
   email: joi.string().email().required().max(100).trim(),

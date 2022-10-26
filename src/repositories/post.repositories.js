@@ -1,9 +1,10 @@
 import { db } from "../database/database.js";
+import sanitizer from "../utils/sanitizer.js"
 
 async function insertNewPost({ description, userId, url }) {
   return db.query(
     `INSERT INTO posts ("userId", url, description) VALUES ($1, $2, $3) RETURNING posts.id`,
-    [userId, url, description]
+    [userId, url, sanitizer(description)]
   );
 }
 
@@ -17,7 +18,7 @@ async function listPosts() {
                       p.url
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
-					WHERE p."deletedAt" IS NULL
+					          WHERE p."deletedAt" IS NULL
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`);
 }
