@@ -1,5 +1,4 @@
 import { db } from "../database/database.js";
-import sanitizer from "../utils/sanitizer.js"
 
 async function insertUser({email, name, passwordHash, picture}) {
   return db.query(
