@@ -20,4 +20,17 @@ async function postFollow(req, res) {
     }
 };
 
-export { postFollow }
+async function getFollow(req, res) {
+    const followedBy = res.locals.userId;
+    const userId = req.params.id;
+    
+    const following = await getFollowing({userId, followedBy});
+
+    if(following.rowCount === 0) {
+        return res.status(200).send({isFollowing: false});
+    }
+
+    return res.status(200).send({isFollowing: true});
+}
+
+export { postFollow, getFollow }
