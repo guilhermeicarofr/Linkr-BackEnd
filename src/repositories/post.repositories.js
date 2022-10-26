@@ -18,7 +18,7 @@ async function listPosts() {
                       p.url
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
-					WHERE p."deletedAt" IS NULL
+					          WHERE p."deletedAt" IS NULL
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`);
 }

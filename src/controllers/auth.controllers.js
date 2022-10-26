@@ -15,7 +15,7 @@ async function signUp(req, res) {
     if (user.rowCount !== 0) return res.sendStatus(409);
     const nameUser = await getUserByName(name);
     if (nameUser.rowCount !== 0) return res.sendStatus(409);
-    await insertUser(email, name, passwordHash, picture);
+    await insertUser({email, name, passwordHash, picture});
     res.sendStatus(201);
   } catch (error) {
     res.sendStatus(500);
