@@ -1,9 +1,10 @@
 import { db } from "../database/database.js";
+import sanitizer from "../utils/sanitizer.js"
 
 async function insertNewPost({ description, userId, url }) {
   return db.query(
     `INSERT INTO posts ("userId", url, description) VALUES ($1, $2, $3) RETURNING posts.id`,
-    [userId, url, description]
+    [userId, url, sanitizer(description)]
   );
 }
 
