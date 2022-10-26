@@ -9,7 +9,7 @@ async function follow({ userId, followedBy}) {
 
 async function getFollowing({userId, followedBy}) {
 	return db.query(
-		`Select * FROM follows WHERE "userId" = $1 AND "followedBy" = $2`,
+		`SELECT * FROM follows WHERE "userId" = $1 AND "followedBy" = $2`,
 		[userId, followedBy]
 	);
 };
