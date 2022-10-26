@@ -68,10 +68,3 @@ ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES
 
 ALTER TABLE "postsHashtags" ADD CONSTRAINT "postsHashtags_fk0" FOREIGN KEY ("hashtagId") REFERENCES "hashtags"("id");
 ALTER TABLE "postsHashtags" ADD CONSTRAINT "postsHashtags_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("id");
-
-
-
-
-
-
-

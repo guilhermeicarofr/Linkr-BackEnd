@@ -8,7 +8,7 @@ async function insertNewPost({ description, userId, url }) {
   );
 }
 
-async function getPosts() {
+async function listPosts() {
   return db.query(`SELECT 
                       p."userId" AS "userId",
                       u.name,
@@ -22,7 +22,6 @@ async function getPosts() {
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`);
 }
-
 
 async function getPostById (postId) {	
 	return db.query(
@@ -68,7 +67,7 @@ async function updatePost({ description, postId }) {
 }
 
 
-async function deletePostRepository ({postId,userId}) {
+async function deletePost ({postId,userId}) {
 	return db.query(
 		`UPDATE 
 			posts AS p
@@ -78,14 +77,14 @@ async function deletePostRepository ({postId,userId}) {
 	);	
 }
 
-async function deletePostsHashtagsRepository (postId) {
+async function deletePostsHashtags (postId) {
 	return db.query(
 		`DELETE FROM "postsHashtags" WHERE "postId" = $1;`,
 		[postId]
 	);
 }
 
-async function deletePostLikesRespository (postId) {
+async function deletePostLikes (postId) {
 	return db.query(
 		`DELETE FROM likes WHERE "postId" = $1;`,
 		[postId]
@@ -94,14 +93,14 @@ async function deletePostLikesRespository (postId) {
 
 export { 
 	insertNewPost,
-	getPosts,
+	listPosts,
 	getPostById, 
 	listLikes, 
 	getLikeByIds, 
 	insertLike, 
 	deleteLike, 
-	deletePostRepository,
-	deletePostsHashtagsRepository,
-	deletePostLikesRespository,
-  updatePost,
+	deletePost,
+	deletePostsHashtags,
+	deletePostLikes,
+  updatePost
 };

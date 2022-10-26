@@ -1,12 +1,12 @@
 import { db } from "../database/database.js";
 
-async function getUsersRepository(userId) {
+async function getUser(userId) {
 	return db.query(`SELECT id, name, picture FROM users WHERE id = $1;`, [
 		userId,
 	]);
 }
 
-async function getUserPostsRepository(userId) {
+async function listUserPosts(userId) {
 	return db.query(
 		`SELECT 
             p."userId" AS "userId",
@@ -17,7 +17,7 @@ async function getUserPostsRepository(userId) {
             p.url
         FROM posts AS p
         JOIN users AS u ON u.id=p."userId"
-        WHERE p."userId" = $1
+        WHERE p."userId" = $1 AND p."deletedAt" IS NULL
         ORDER BY p."createdAt" DESC;`,
 		[userId]
 	);
@@ -36,4 +36,4 @@ async function listUsersByName(name) {
 	);
 }
 
-export { getUserPostsRepository, getUsersRepository, listUsersByName };
+export { listUserPosts, getUser, listUsersByName };

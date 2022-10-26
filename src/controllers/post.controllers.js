@@ -1,24 +1,24 @@
 import urlMetadata from "url-metadata";
 
 import {
-
 	insertNewPost,
-	getPosts,
+	listPosts,
 	listLikes,
 	insertLike,
 	getLikeByIds,
 	deleteLike,
-	deletePostRepository,
-	deletePostLikesRespository,
-	deletePostsHashtagsRepository,
-  updatePost,
+	deletePost,
+	deletePostLikes,
+	deletePostsHashtags,
+  updatePost
+} from "../repositories/post.repositories.js";
 
-} from "../repositories/post.repository.js";
 import {
   getTag,
   insertNewTag,
-  insertNewTagQuote,
+  insertNewTagQuote
 } from "../repositories/hashtags.repositories.js";
+
 import { filterTags } from "../utils/filterTags.js";
 
 async function createPost(req, res) {
@@ -55,19 +55,30 @@ async function createPost(req, res) {
 
 async function getTimelinePosts(req, res) {
   try {
-    const posts = await getPosts();
+    const posts = await listPosts();
 
     const completePosts = await Promise.all(
       posts.rows.map(async (post) => {
-        const { title, image, url, description } = await urlMetadata(post.url);
+        let url = {};
+        await urlMetadata(post.url).then((meta) => {
+          url = { 
+            title: meta.title,
+            image: meta.image,
+            path: meta.url,
+            description: meta.description
+          }})
+        .catch((error) => {
+          url = { 
+            title: "Preview not available",
+            image: "",
+            path: post.url,
+            description: "This link has no description"
+          }
+        });
+
         return {
           ...post,
-          url: {
-            title,
-            image,
-            path: url,
-            description,
-          },
+          url
         };
       })
     );
@@ -83,7 +94,7 @@ async function getLikes(req, res) {
   try {
     const likes = (await listLikes(postId)).rows;
     return res.status(200).send(likes);
-  } catch {
+  } catch (error) {
     return res.sendStatus(500);
   }
 }
@@ -99,7 +110,7 @@ async function changeLikes(req, res) {
     }
     await deleteLike({ postId, userId });
     return res.sendStatus(204);
-  } catch {
+  } catch (error) {
     return res.sendStatus(500);
   }
 }
@@ -116,7 +127,7 @@ async function editPosts(req, res) {
 
   try {
     await updatePost({ description, postId });
-    await deletePostsHashtagsRepository(postId);
+    await deletePostsHashtags(postId);
 
     if (tags.length) {
       await tags.forEach(async (tag) => {
@@ -138,15 +149,14 @@ async function editPosts(req, res) {
   }
 }
 
-
 async function deleteUserPost(req, res) {
 	const postId = req.params.postId;
 	const userId = res.locals.userId;
 
 	try {
-		await deletePostRepository({postId, userId});
-		await deletePostsHashtagsRepository(postId);
-		await deletePostLikesRespository(postId);
+		await deletePost({postId, userId});
+		await deletePostsHashtags(postId);
+		await deletePostLikes(postId);
 
 		return res.sendStatus(200);
 

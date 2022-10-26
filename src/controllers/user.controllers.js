@@ -1,32 +1,43 @@
 import urlMetadata from "url-metadata";
 
 import {
-  getUserPostsRepository,
-  getUsersRepository,
+  listUserPosts,
+  getUser,
   listUsersByName,
 } from "../repositories/user.repositories.js";
 
-async function userPostsController(req, res) {
+async function getUserPosts(req, res) {
   const userId = req.params.id;
 
   try {
-    const user = await getUsersRepository(userId);
+    const user = await getUser(userId);
 
     if (user.rowCount === 0) return res.sendStatus(404);
 
-    const userPosts = await getUserPostsRepository(userId);
+    const userPosts = await listUserPosts(userId);
 
     const completePosts = await Promise.all(
       userPosts.rows.map(async (post) => {
-        const { title, image, url, description } = await urlMetadata(post.url);
+        let url = {};
+        await urlMetadata(post.url).then((meta) => {
+          url = { 
+            title: meta.title,
+            image: meta.image,
+            path: meta.url,
+            description: meta.description
+          }})
+        .catch((error) => {
+          url = { 
+            title: "Preview not available",
+            image: "",
+            path: post.url,
+            description: "This link has no description"
+          }
+        });
+
         return {
           ...post,
-          url: {
-            title,
-            image,
-            path: url,
-            description,
-          },
+          url
         };
       })
     );
@@ -54,4 +65,4 @@ async function getUsersByName(req, res) {
   }
 }
 
-export { userPostsController, getUsersByName };
+export { getUserPosts, getUsersByName };
