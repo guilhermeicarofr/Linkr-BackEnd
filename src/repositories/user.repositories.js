@@ -51,7 +51,7 @@ async function listUserPosts(userId) {
           
           ) AS "feed"
         
-        WHERE feed."userId" = $1 OR feed."shareUserId"=$1
+        WHERE (feed."userId"=$1 AND feed."shareId" IS NULL) OR feed."shareUserId"=$1
         ORDER BY feed."createdAt" DESC;`,
 		[ userId ]
 	);
