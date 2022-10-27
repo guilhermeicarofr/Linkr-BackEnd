@@ -7,6 +7,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import { userRouter } from "./routes/user.routes.js";
 import { postRouter } from "./routes/post.routes.js";
 import { hashtagsRouter } from "./routes/hashtags.routes.js";
+import { commentRouter } from "./routes/comment.routes.js";
 import { followRouter } from "./routes/follow.routes.js";
 import { shareRouter } from "./routes/share.routes.js";
 
@@ -18,6 +19,7 @@ server.use(authRouter);
 server.use(userRouter);
 server.use(postRouter);
 server.use(hashtagsRouter);
+server.use(commentRouter);
 server.use(followRouter);
 server.use(shareRouter);
 
