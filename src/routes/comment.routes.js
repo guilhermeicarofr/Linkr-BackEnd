@@ -1,8 +1,8 @@
 import express from "express";
 
-import { createComment, getComments } from "../controllers/comment.controllers";
-import { validatePost } from "../middlewares/validate.post";
-import { validateToken } from "../middlewares/validate.token";
+import { createComment, getComments } from "../controllers/comment.controllers.js";
+import { validatePost } from "../middlewares/validate.post.js";
+import { validateToken } from "../middlewares/validate.token.js";
 
 const commentRouter = express.Router();
 

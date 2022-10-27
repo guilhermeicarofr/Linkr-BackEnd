@@ -2,9 +2,9 @@ import { db } from "../database/database.js";
 
 async function listComments(postId) {
 	return db.query(
-		`SELECT u.id, u.name, c.comment,, COUNT(ph.id) AS quotes FROM hashtags h 
-		JOIN "postsHashtags" ph ON h.id = ph."hashtagId" 
-		WHERE h."deletedAt" IS NULL GROUP BY h.id ORDER BY quotes DESC LIMIT 10;`
+		`SELECT c."userId", c."postId", c.comment, p."userId" AS "isFollowing" FROM comments c
+		 JOIN posts p ON c."postId" = p.id 
+		 WHERE c."postId" = $1 ORDER BY c.id DESC;`,[postId]
 	);
 }
 
