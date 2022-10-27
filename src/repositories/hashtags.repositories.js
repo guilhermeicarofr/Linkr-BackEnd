@@ -35,12 +35,15 @@ async function listHashtagPosts(hashtag) {
                       u.picture,
                       p.id AS "postId",
                       p.description,
-                      p.url
+                      p.url,
+					  NULL AS "shareId",
+					  NULL AS "shareUserId",
+					  NULL AS "shareUserName"	  
                     FROM posts AS p
                     JOIN users AS u ON u.id=p."userId"
                     JOIN "postsHashtags" AS ph ON ph."postId" = p.id
                     JOIN hashtags AS h ON h.id = ph."hashtagId"
-					          WHERE p."deletedAt" IS NULL AND h.name = $1
+					WHERE p."deletedAt" IS NULL AND h.name = $1
                     ORDER BY p."createdAt" DESC
                     LIMIT 20;`,
 		[hashtag]
