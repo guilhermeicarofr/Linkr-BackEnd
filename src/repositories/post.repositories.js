@@ -9,18 +9,50 @@ async function insertNewPost({ description, userId, url }) {
 }
 
 async function listPosts() {
-  return db.query(`SELECT 
-                      p."userId" AS "userId",
-                      u.name,
-                      u.picture,
-                      p.id AS "postId",
-                      p.description,
-                      p.url
-                    FROM posts AS p
-                    JOIN users AS u ON u.id=p."userId"
-					          WHERE p."deletedAt" IS NULL
-                    ORDER BY p."createdAt" DESC
-                    LIMIT 20;`);
+  return db.query(`
+    select *
+    from (
+    
+      (
+        select 
+          p."userId" AS "userId",
+            u.name,
+            u.picture,
+            p.id AS "postId",
+            p.description,
+              p.url,
+            s."createdAt",
+            s."userId" as "sharedBy",
+            s.id as "shareId"
+        from share s
+        join posts p on s."postId"=p.id
+        join users u on p."userId"=u.id
+        WHERE p."deletedAt" IS null
+      )
+      
+      union all
+      
+      (
+        SELECT 
+              p."userId" AS "userId",
+              u.name,
+              u.picture,
+              p.id AS "postId",
+              p.description,
+              p.url,
+            p."createdAt",
+            null as "sharedBy",
+            null as "sharedId"
+          FROM posts AS p
+          JOIN users AS u ON u.id=p."userId"
+        WHERE p."deletedAt" IS null
+      )
+
+    ) as "feed"
+    
+  order by feed."createdAt" desc
+  limit 20  
+  ;`);
 }
 
 async function getPostById (postId) {	
