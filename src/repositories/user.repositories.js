@@ -59,10 +59,13 @@ async function listUsersByName(name) {
 		`SELECT 
             u.id,
             u.name,
-            u.picture          
-        FROM users AS u        
+            u.picture,
+            f."userId"        
+        FROM users AS u    
+        LEFT JOIN follows AS f ON u.id = f."userId"     
         WHERE  u.name ILIKE $1 AND u."deletedAt" IS NULL
-        ORDER BY u.name;`,
+        GROUP BY u.id, f."userId", f."followedBy"
+        ORDER BY f."followedBy", u.name;`,
 		[`${name}%`]
 	);
 }
