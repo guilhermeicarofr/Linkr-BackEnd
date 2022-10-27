@@ -6,6 +6,9 @@ function validateSchema(schema) {
     if(req.body.name) {
         req.body.name = sanitizer(req.body.name);
     }
+    if(req.body.comment) {
+      req.body.comment = sanitizer(req.body.comment);
+  }
 
     const validation = schema.validate(req.body, { abortEarly: false });
 

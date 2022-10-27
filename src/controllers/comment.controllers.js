@@ -30,6 +30,7 @@ async function getComments(req, res) {
 
 async function createComment(req, res) {
 	const { comment } = req.body;
+	
 	const userId = res.locals.userId;
 	const postId = req.params.postId;
 	try {
