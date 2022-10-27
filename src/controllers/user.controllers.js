@@ -55,10 +55,11 @@ async function getUserPosts(req, res) {
   }
 }
 async function getUsersByName(req, res) {
+  const userId = res.locals.userId;
   const name = req.query.name;
   if (!name) return res.sendStatus(422);
   try {
-    const users = (await listUsersByName(name)).rows;
+    const users = (await listUsersByName({name,userId})).rows;
     res.status(200).send(users);
   } catch (error) {
     return res.sendStatus(500);
