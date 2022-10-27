@@ -12,8 +12,7 @@ async function getComments(req, res) {
 		await Promise.all(
 			comments.map(async (comment) => {
 				const userId = comment.isFollowing;
-				const following = await getFollowing({ userId, followedBy });
-
+				const following = await getFollowing({ userId, followedBy });				
 				if (following.rowCount === 0) {
 					comment.isFollowing = false;
 				} else {
@@ -30,7 +29,7 @@ async function getComments(req, res) {
 
 async function createComment(req, res) {
 	const { comment } = req.body;
-	
+
 	const userId = res.locals.userId;
 	const postId = req.params.postId;
 	try {
