@@ -22,9 +22,11 @@ async function listPosts() {
           p.description,
           p.url,
           s."createdAt",
-          s."userId" AS "sharedBy",
-          s.id AS "shareId"
+          s.id AS "shareId",
+          s."userId" AS "shareUserId",
+          us."name" AS "shareUserName"
         FROM share s
+        JOIN users us ON s."userId"=us.id
         JOIN posts p ON s."postId"=p.id
         JOIN users u ON p."userId"=u.id
         WHERE p."deletedAt" IS NULL
@@ -41,8 +43,9 @@ async function listPosts() {
           p.description,
           p.url,
           p."createdAt",
-          NULL AS "sharedBy",
-          NULL AS "sharedId"
+          NULL AS "shareId",
+          NULL AS "shareUserId",
+          NULL AS "shareUserName"
         FROM posts AS p
         JOIN users AS u ON u.id=p."userId"
         WHERE p."deletedAt" IS NULL
