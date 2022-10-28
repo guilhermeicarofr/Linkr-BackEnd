@@ -44,10 +44,8 @@ async function getHashtagsByName(req, res) {
 				};
 			})
 		);
-		console.log(completePosts)
 		res.status(200).send(completePosts);
 	} catch (error) {
-		console.log(error)
 		return res.sendStatus(500);
 	}
 }
