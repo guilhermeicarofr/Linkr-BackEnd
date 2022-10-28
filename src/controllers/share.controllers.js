@@ -61,7 +61,6 @@ async function unsharePost(req, res) {
 
         await deleteShare(shareId);
     } catch (error) {
-        console.log(error)
         res.sendStatus(500);
     }
 }
