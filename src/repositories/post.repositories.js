@@ -29,7 +29,7 @@ async function listPosts() {
         JOIN users us ON s."userId"=us.id
         JOIN posts p ON s."postId"=p.id
         JOIN users u ON p."userId"=u.id
-        WHERE p."deletedAt" IS NULL
+        WHERE p."deletedAt" IS NULL AND s."deletedAt" IS NULL
       )
       
       UNION ALL
