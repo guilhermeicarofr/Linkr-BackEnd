@@ -28,24 +28,67 @@ async function insertNewTagQuote({ post, tag }) {
 	);
 }
 
+async function deleteTagQuote({post, tag}) {
+	return db.query(`
+		DELETE FROM "postsHashtags" ph1 
+		WHERE ph1.id IN 
+			(SELECT ph2.id FROM "postsHashtags" ph2 WHERE ph2."postId" = $1 AND ph2."hashtagId"=$2 LIMIT 1)
+		;`,
+		[post, tag]
+	);
+}
+
 async function listHashtagPosts(hashtag) {
-	return db.query(`SELECT 		
-                      p."userId" AS "userId",
-                      u.name,
-                      u.picture,
-                      p.id AS "postId",
-                      p.description,
-                      p.url,
-					  NULL AS "shareId",
-					  NULL AS "shareUserId",
-					  NULL AS "shareUserName"	  
-                    FROM posts AS p
-                    JOIN users AS u ON u.id=p."userId"
-                    JOIN "postsHashtags" AS ph ON ph."postId" = p.id
-                    JOIN hashtags AS h ON h.id = ph."hashtagId"
-					WHERE p."deletedAt" IS NULL AND h.name = $1
-                    ORDER BY p."createdAt" DESC
-                    LIMIT 20;`,
+	return db.query(`
+
+		SELECT *
+		FROM (
+
+		(
+			SELECT 
+			p."userId" AS "userId",
+			u.name,
+			u.picture,
+			p.id AS "postId",
+			p.description,
+			p.url,
+			s."createdAt",
+			s.id AS "shareId",
+			s."userId" AS "shareUserId",
+			us."name" AS "shareUserName"
+			FROM share s
+			JOIN users us ON s."userId"=us.id
+			JOIN posts p ON s."postId"=p.id
+			JOIN users u ON p."userId"=u.id
+			WHERE p."deletedAt" IS NULL AND s."deletedAt" IS NULL
+		)
+		
+		UNION ALL
+		
+		(
+			SELECT 
+			p."userId" AS "userId",
+			u.name,
+			u.picture,
+			p.id AS "postId",
+			p.description,
+			p.url,
+			p."createdAt",
+			NULL AS "shareId",
+			NULL AS "shareUserId",
+			NULL AS "shareUserName"
+			FROM posts AS p
+			JOIN users AS u ON u.id=p."userId"
+			WHERE p."deletedAt" IS NULL
+		)
+		
+		) AS "feed"
+
+		JOIN "postsHashtags" ph ON ph."postId"=feed."postId"
+		JOIN hashtags h ON h.id=ph."hashtagId"
+		WHERE h.name = $1
+		ORDER BY feed."createdAt" DESC
+		LIMIT 20;`,
 		[hashtag]
 	);
 }
@@ -55,5 +98,6 @@ export {
 	getTag,
 	insertNewTag,
 	insertNewTagQuote,
-	listHashtagPosts
+	listHashtagPosts,
+	deleteTagQuote
 };
