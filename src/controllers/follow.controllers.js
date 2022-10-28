@@ -1,4 +1,4 @@
-import { follow, getFollowing, unfollow } from "../repositories/follow.repositories.js";
+import { countProfilesFollowedByUser, follow, getFollowing, unfollow } from "../repositories/follow.repositories.js";
 
 async function postFollow(req, res) {
     const followedBy = res.locals.userId
@@ -33,4 +33,15 @@ async function getFollow(req, res) {
     return res.status(200).send({isFollowing: true});
 }
 
-export { postFollow, getFollow }
+async function getProfilesUserFollows(req, res) {
+    const { userId } = res.locals;
+
+    try {
+        const followCount = await countProfilesFollowedByUser({ userId });
+        res.status(200).send(followCount?.rows[0]);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+}
+
+export { postFollow, getFollow, getProfilesUserFollows }

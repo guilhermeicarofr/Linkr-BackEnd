@@ -54,8 +54,10 @@ async function createPost(req, res) {
 }
 
 async function getTimelinePosts(req, res) {
+  const userId = res.locals.userId;
+
   try {
-    const posts = await listPosts();
+    const posts = await listPosts(userId);
 
     const completePosts = await Promise.all(
       posts.rows.map(async (post) => {
@@ -85,6 +87,7 @@ async function getTimelinePosts(req, res) {
 
     res.status(200).send(completePosts);
   } catch (error) {
+    console.log(error)
     return res.sendStatus(500);
   }
 }

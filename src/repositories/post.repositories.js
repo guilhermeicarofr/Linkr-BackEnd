@@ -8,7 +8,7 @@ async function insertNewPost({ description, userId, url }) {
   );
 }
 
-async function listPosts() {
+async function listPosts(userId) {
   return db.query(`
     SELECT *
     FROM (
@@ -52,10 +52,15 @@ async function listPosts() {
       )
     
     ) AS "feed"
-      
+    
+    WHERE feed."userId" IN (SELECT f."userId" FROM follows f WHERE f."followedBy"=$1)
+    OR feed."shareUserId" IN (SELECT f."userId" FROM follows f WHERE f."followedBy"=$1)
+    OR feed."userId"=$1
+    OR feed."shareUserId"=$1
+
     ORDER BY feed."createdAt" DESC
     LIMIT 20;
-  `);
+  `, [ userId ]);
 }
 
 async function getPostById (postId) {	
