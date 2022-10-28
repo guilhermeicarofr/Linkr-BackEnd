@@ -60,7 +60,15 @@ async function getUsersByName(req, res) {
   if (!name) return res.sendStatus(422);
   try {
     const users = (await listUsersByName({name,userId})).rows;
-    res.status(200).send(users);
+    const hash = {};
+    const uniqueUsers = [];
+    users.forEach((user)=>{
+      if (!hash[user.id]){
+        hash[user.id]=true;
+        uniqueUsers.push(user);
+      }
+    })    
+    res.status(200).send(uniqueUsers);
   } catch (error) {
     return res.sendStatus(500);
   }
