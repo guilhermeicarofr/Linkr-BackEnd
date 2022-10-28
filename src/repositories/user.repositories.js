@@ -57,19 +57,38 @@ async function listUserPosts(userId) {
 	);
 }
 
-async function listUsersByName(name) {
-	return db.query(
-		`SELECT 
-            u.id,
-            u.name,
-            u.picture,
-            f."userId"        
-        FROM users AS u    
-        LEFT JOIN follows AS f ON u.id = f."userId"     
-        WHERE  u.name ILIKE $1 AND u."deletedAt" IS NULL
-        GROUP BY u.id, f."userId", f."followedBy"
-        ORDER BY f."followedBy", u.name;`,
-		[`${name}%`]
+async function listUsersByName({name,userId}) {
+	return db.query(`
+      SELECT * 
+      FROM (
+          (
+            SELECT 
+              u.id,
+              u.name,
+              u.picture,
+              f."userId",
+              f."followedBy"
+            FROM users AS u
+            LEFT JOIN follows AS f ON u.id = f."userId"
+            WHERE u.name ILIKE $1 AND f."followedBy" = $2  AND u."deletedAt" IS NULL
+            ORDER BY u.name
+            )
+            UNION ALL
+            (
+              SELECT 
+                u.id,
+                u.name,
+                u.picture,
+                f."userId",
+                f."followedBy"
+              FROM users AS u
+              LEFT JOIN follows AS f ON u.id = f."userId"
+              WHERE u.name ILIKE $1 AND (f."followedBy" != $2 OR f."followedBy" ISNULL)  AND u."deletedAt" IS NULL
+              ORDER BY u.name
+              )
+            ) AS "search";
+     `,
+		[`${name}%`,userId ]
 	);
 }
 
