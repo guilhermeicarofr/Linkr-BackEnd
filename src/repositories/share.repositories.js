@@ -31,9 +31,9 @@ async function getSharebyId(shareId) {
 
 async function deleteShare(shareId) {
     return db.query(`
-        DELETE
-        FROM share s
-        WHERE s.id=$1
+        UPDATE share
+        SET "deletedAt"=NOW()
+        WHERE id=$1
         ;`, [shareId]);
 }
 

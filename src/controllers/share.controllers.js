@@ -4,6 +4,8 @@ async function sharePost (req, res) {
     const { postId } = req.params;
     const userId = res.locals.userId;
 
+
+
     try {
         await insertNewShare({postId, userId});
         res.sendStatus(201);
@@ -22,7 +24,7 @@ async function unsharePost(req, res) {
             return res.sendStatus(401);
         }
 
-        await deleteShare(shareId)
+        await deleteShare(shareId);
     } catch (error) {
         console.log(error)
         res.sendStatus(500);
