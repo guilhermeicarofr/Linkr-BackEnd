@@ -60,7 +60,7 @@ async function listPosts({count, userId}) {
 
     ORDER BY feed."createdAt" DESC
     OFFSET $2
-    LIMIT 7;
+    LIMIT 10;
   `, [ userId, count]);
 }
 
