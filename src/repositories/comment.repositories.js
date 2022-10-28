@@ -2,7 +2,16 @@ import { db } from "../database/database.js";
 
 async function listComments(postId) {
 	return db.query(
-		`SELECT c."userId",u.name, c."postId", c.comment, c."userId" AS "isFollowing" FROM comments c
+		`SELECT 
+		c."userId",
+		u.name, 
+		u.picture,
+		c."postId", 
+		c.comment, 
+		c."userId"		
+		AS 
+		"isFollowing" 
+		 FROM comments c
 		 JOIN posts p ON c."postId" = p.id 
 		 JOIN users u ON c."userId" = u.id
 		 WHERE c."postId" = $1 ORDER BY c.id DESC;`,[postId]
