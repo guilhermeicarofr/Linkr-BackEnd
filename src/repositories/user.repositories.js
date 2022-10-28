@@ -28,6 +28,7 @@ async function listUserPosts(userId) {
               JOIN posts p ON s."postId"=p.id
               JOIN users u ON p."userId"=u.id
               WHERE p."deletedAt" IS NULL
+              AND s."deletedAt" IS NULL
             )
             
             UNION ALL
