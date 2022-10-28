@@ -5,7 +5,7 @@ async function insertNewShare({postId, userId}) {
 }
 
 async function countPostShares(postId) {
-    return db.query(`SELECT COUNT(share.id) AS "shareCount" FROM share WHERE share."postId"=$1;`, [ postId ]);
+    return db.query(`SELECT COUNT(share.id) AS "shareCount" FROM share WHERE share."postId"=$1 AND share."deletedAt" IS NULL;`, [ postId ]);
 }
 
 async function getSharebyId(shareId) {
