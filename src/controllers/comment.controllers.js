@@ -1,4 +1,5 @@
 import {
+	countComments,
 	insertComment,
 	listComments,
 } from "../repositories/comment.repositories.js";
@@ -36,8 +37,19 @@ async function createComment(req, res) {
 		await insertComment({ postId, userId, comment });
 		return res.sendStatus(201);
 	} catch (error) {
-		console.log(error);
 		return res.sendStatus(500);
 	}
 }
-export { getComments, createComment };
+
+async function getCountComments(req, res) {
+	const postId = req.params.postId;
+
+	try {
+		const count = (await countComments(postId)).rows[0];
+		return res.status(200).send(count)
+	} catch (error) {
+		return res.sendStatus(500)
+	}
+}
+
+export { getComments, createComment, getCountComments };
