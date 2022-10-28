@@ -8,7 +8,7 @@ async function insertNewPost({ description, userId, url }) {
   );
 }
 
-async function listPosts(count) {
+async function listPosts({count, userId}) {
   return db.query(`
     SELECT *
     FROM (
@@ -29,7 +29,7 @@ async function listPosts(count) {
         JOIN users us ON s."userId"=us.id
         JOIN posts p ON s."postId"=p.id
         JOIN users u ON p."userId"=u.id
-        WHERE p."deletedAt" IS NULL
+        WHERE p."deletedAt" IS NULL AND s."deletedAt" IS NULL
       )
       
       UNION ALL
@@ -52,11 +52,16 @@ async function listPosts(count) {
       )
     
     ) AS "feed"
-      
+    
+    WHERE feed."userId" IN (SELECT f."userId" FROM follows f WHERE f."followedBy"=$1)
+    OR feed."shareUserId" IN (SELECT f."userId" FROM follows f WHERE f."followedBy"=$1)
+    OR feed."userId"=$1
+    OR feed."shareUserId"=$1
+
     ORDER BY feed."createdAt" DESC
-    OFFSET $1
+    OFFSET $2
     LIMIT 7;
-  `, [count]);
+  `, [ userId, count]);
 }
 
 async function getPostById (postId) {	

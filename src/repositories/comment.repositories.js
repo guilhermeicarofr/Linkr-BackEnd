@@ -25,4 +25,11 @@ async function insertComment({postId, userId, comment}) {
 	);
 }
 
-export { listComments, insertComment };
+async function countComments(postId) {
+	return db.query(
+		`SELECT COUNT(comments.id) AS "commentCount" FROM comments WHERE comments."postId" = $1;`,
+		[postId]
+	);
+}
+
+export { listComments, insertComment, countComments };

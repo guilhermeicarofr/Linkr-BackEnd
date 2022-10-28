@@ -55,8 +55,13 @@ async function createPost(req, res) {
 
 async function getTimelinePosts(req, res) {
   const count = req.query.count;
+  const userId = res.locals.userId;
+
+  if (!count){
+    return
+  }
   try {
-    const posts = await listPosts(count);
+    const posts = await listPosts({count, userId});
 
     const completePosts = await Promise.all(
       posts.rows.map(async (post) => {

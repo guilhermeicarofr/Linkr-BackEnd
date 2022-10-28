@@ -44,7 +44,6 @@ async function getHashtagsByName(req, res) {
 				};
 			})
 		);
-
 		res.status(200).send(completePosts);
 	} catch (error) {
 		return res.sendStatus(500);
