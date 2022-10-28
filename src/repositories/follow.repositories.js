@@ -21,6 +21,8 @@ async function unfollow({userId, followedBy}) {
 	);
 };
 
+async function countProfilesFollowedByUser({ userId }) {
+	return db.query(`SELECT COUNT(f."userId") FROM follows f WHERE f."followedBy"=$1;`, [ userId ])
+}
 
-
-export { follow, getFollowing, unfollow };
+export { follow, getFollowing, unfollow, countProfilesFollowedByUser };
