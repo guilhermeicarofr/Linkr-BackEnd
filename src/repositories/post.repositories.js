@@ -8,7 +8,7 @@ async function insertNewPost({ description, userId, url }) {
   );
 }
 
-async function listPosts(userId) {
+async function listPosts({count, userId}) {
   return db.query(`
     SELECT *
     FROM (
@@ -59,8 +59,9 @@ async function listPosts(userId) {
     OR feed."shareUserId"=$1
 
     ORDER BY feed."createdAt" DESC
-    LIMIT 20;
-  `, [ userId ]);
+    OFFSET $2
+    LIMIT 10;
+  `, [ userId, count]);
 }
 
 async function getPostById (postId) {	
